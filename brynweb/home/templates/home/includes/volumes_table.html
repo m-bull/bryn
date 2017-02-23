@@ -1,0 +1,38 @@
+<table class="table table-responsive">
+  <tr>
+    <th>Name</th>
+    <th>Size (GB)</th>
+    <th>Status</th>
+    <th>Connected To</th>
+    <th><button class="btn btn-info btn-instances-refresh" data-team-action="resfresh"><i class="fa fa-refresh"></i> Refresh</button></th>
+  </tr>
+
+  {% for v in t.volumes %}
+    <tr>
+      <td>{{ v.name }}</td>
+      <td>{{ v.size }}</td>
+      <td>{{ v.status }}</td>
+      {% if v.attached_to %}
+        <td>Attached to <b>{{ v.attached_to.name }}</b> as {{ v.attached_as }}</td>
+      {% else %}
+        <td>Not attached</td>
+      {% endif %}
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown"><i class="fa fa-reorder"></i> Options</button>
+          <ul class="dropdown-menu">
+            {% if v.attached_to %}
+                <li><a href="#" onclick="ajaxInstanceAction(event, '');">Disconnect from server</a></li>
+            {% else %}
+                <li><a href="#" onclick="ajaxInstanceAction(event, '');"><span class="text-success">Connect to server</span></a></li>
+            {% endif %}
+            <li><a href="#" onclick="ajaxInstanceAction(event, '');"><span class="text-success">Make snapshot</span></a></li>
+            <li><a href="#" onclick="ajaxInstanceAction(event, '');"><span class="text-danger">Delete</span></a></li>
+          </ul>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+
+</table>

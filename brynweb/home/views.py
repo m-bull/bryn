@@ -15,6 +15,7 @@ from userdb.models import Team, Region, TeamMember
 from openstack.models import Tenant, get_tenant_for_team, ActionLog
 from forms import LaunchServerForm, LaunchImageServerForm, RegionSelectForm
 from scripts.list_instances import list_instances
+from scripts.list_volumes import list_volumes
 from scripts.gvl_launch import launch_gvl
 from scripts.image_launch import launch_image
 
@@ -78,6 +79,11 @@ def home(request):
                     'user': request.user,
                     'e': e
                 })
+        t.launch_form = LaunchServerForm()
+        t.launch_custom_form = LaunchImageServerForm(tenant.get_images(), tenant.get_keys())
+        t.tenant_access = tenant
+        t.instances = list_instances(tenant)
+        t.volumes = list_volumes(tenant, t.instances)
 
     context = {
         'invite': invite,

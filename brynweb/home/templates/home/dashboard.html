@@ -45,6 +45,10 @@
                 <div class="instances-table-container" data-team-id="{{ t.id }}">
                   {% include "home/includes/instances_table.html" %}
                 </div>
+                <h4>Storage disks at {{ region|title }}</h4>
+                <div class="instances-table-container" data-team-id="{{ t.id }}">
+                  {% include "home/includes/volumes_table.html" %}
+                </div>
                 <div class="row">
                   <div class="col-md-6">
                     {% include "home/includes/dashboard_actions.html" %}
