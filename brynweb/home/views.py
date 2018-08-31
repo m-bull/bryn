@@ -66,6 +66,7 @@ def home(request):
             t.launch_custom_form = LaunchImageServerForm(tenant.get_images(),tenant.get_flavors(), available_keys)
             t.tenant_access = tenant
             t.instances = list_instances(tenant)
+            t.volumes = list_volumes(tenant, t.instances)
         except Exception, e:
             messages.error(
                 request,
