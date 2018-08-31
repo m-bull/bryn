@@ -28,10 +28,12 @@
           <button class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown"><i class="fa fa-reorder"></i> Options</button>
           <ul class="dropdown-menu instance-actions-list">
             {% if i.status == 'SHUTOFF' %}
+	      <li><a href="{% url 'home:shelve' t.pk i.id %}"><span class="text-success">Shelve</span></a></li>
               <li><a href="{% url 'home:start' t.pk i.id %}"><span class="text-success">Start</span></a></li>
             {% elif i.status == 'SHELVED_OFFLOADED' %}
               <li><a href="{% url 'home:unshelve' t.pk i.id %}"><span class="text-success">Unshelve</span></a></li>
             {% else %}
+	      <li><a href="{% url 'home:shelve' t.pk i.id %}">Shelve</a></li>
               <li><a href="{% url 'home:stop' t.pk i.id %}">Stop</a></li>
               <li><a href="{% url 'home:reboot' t.pk i.id %}">Reboot</a></li>
             {% endif %}

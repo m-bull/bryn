@@ -63,6 +63,10 @@ class Tenant(Model):
         server = self.get_server(uuid)
         server.delete()
 
+    def shelve_server(self, uuid):
+        server = self.get_server(uuid)
+        server.shelve()
+
     def unshelve_server(self, uuid):
         server = self.get_server(uuid)
         server.unshelve()
