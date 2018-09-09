@@ -19,13 +19,13 @@ def list_volumes(tenant, instances=None):
 
     volumes = []
     for v in cinder.volumes.list():
-        if v.attachments:
+        if v.attachments and v.attachments[0]['server_id'] in instancehash.keys():
             attached_as = v.attachments[0]['device']
             attached_to = instancehash[v.attachments[0]['server_id']]
         else:
             attached_as = 'n/a'
             attached_to = None
-
+    
         if v.bootable == 'false':
             volumes.append({'id' : v.id,
                             'name' : v.name,
@@ -33,7 +33,11 @@ def list_volumes(tenant, instances=None):
                             'status' : v.status,
                             'attached_as' : attached_as,
                             'attached_to' : attached_to
-                           })
+                            })
+
+    print "VOLUMES"
+    print tenant
+    print volumes
     return volumes
 
 def run():
