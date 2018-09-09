@@ -48,7 +48,8 @@ def list_instances(tenant):
                         'status' : s.status,
                         'ip' : ip})
 
-    return servers
+
+        return servers
 
 def run():
     team = Team.objects.get(pk=1)

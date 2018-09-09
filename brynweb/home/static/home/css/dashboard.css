@@ -3,6 +3,11 @@
   margin-bottom: 10px;
 }
 
+.btn-volumes-refresh {
+	  float: right;
+	    margin-bottom: 10px;
+}
+
 .table i.fa {
   text-align: center;
   width: 25px;

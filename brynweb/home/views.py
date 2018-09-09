@@ -21,7 +21,6 @@ from scripts.image_launch import launch_image
 
 from .utils import messages_to_json
 
-
 @login_required
 def home(request):
     region = request.user.userprofile.current_region
@@ -73,18 +72,13 @@ def home(request):
                 'The %s region is currently unavailable. Check the community '
                 'forum for service status.' % (region.name))
             slack_message(
-                'home/slack/region_api_exception.slack',
+               'home/slack/region_api_exception.slack',
                 {
                     'team': t,
                     'region': region,
                     'user': request.user,
                     'e': e
                 })
-        t.launch_form = LaunchServerForm()
-        t.launch_custom_form = LaunchImageServerForm(tenant.get_images(), tenant.get_keys())
-        t.tenant_access = tenant
-        t.instances = list_instances(tenant)
-        t.volumes = list_volumes(tenant, t.instances)
 
     context = {
         'invite': invite,
@@ -111,6 +105,22 @@ def get_instances_table(request):
     else:
         return HttpResponseBadRequest
 
+@login_required
+def get_volumes_table(request):
+    if request.is_ajax():
+        team = get_object_or_404(Team, pk=request.GET.get('team_id'))
+        if not team.teammember_set.filter(user=request.user):
+            return HttpResponseBadRequest
+        tenant = get_tenant_for_team(team, request.user.userprofile.current_region)
+        if tenant:
+            team.instances = list_instances(tenant)
+            team.volumes = list_volumes(tenant, team.instances)
+        html = render_to_string(
+            'home/includes/volumes_table.html',
+            {'t': team})
+        return JsonResponse({'volumes_table': html})
+    else:
+        return HttpResponseBadRequest
 
 def validate_and_get_tenant(request, teamid):
     team = get_object_or_404(Team, pk=teamid)

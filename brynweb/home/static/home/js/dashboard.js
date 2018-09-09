@@ -36,6 +36,27 @@
     }
   };
 
+  dashboard.refreshVolumes = function (container) {
+    console.log("Refresh...");
+    container = $(container);
+    $.ajax({
+      url: "/get_volumes_table",
+      type: "get",
+      data: {team_id: container.attr("data-team-id")},
+
+      success: function(json) {
+        container.html(json.volumes_table);
+      }
+    });
+  };
+
+  dashboard.refreshVolumesAfter = function (container, timeArray) {
+    for (var i in timeArray) {
+      console.log(timeArray[i]);
+      setTimeout(dashboard.refreshVolumes, timeArray[i], container);
+    }
+  };
+
   dashboard.ajaxInstanceAction = function (event, url) {
     var target = $(event.target);
     var teamContainer = target.closest("div.team-container");
@@ -79,13 +100,20 @@
   });
 
   // Instances refresh button
-  $(document).on("click", "button[data-team-action='refresh']", function(){
+  $(document).on("click", "button[data-team-action='refresh-instances']", function(){
     var button = $(this);
     button.find("i").addClass("fa-spin fa-spinner");
     dashboard.refreshInstances(button.closest(".instances-table-container"));
   });
 
-  // Instance actions
+  // Volumes refresh button
+  $(document).on("click", "button[data-team-action='refresh-volumes']", function(){
+    var button = $(this);
+    button.find("i").addClass("fa-spin fa-spinner");
+    dashboard.refreshVolumes(button.closest(".volumes-table-container"));
+  });
+
+ // Instance actions
   $(document).on("click", "ul.instance-actions-list > li > a", function (event) {
     event.preventDefault();
     var anchor = $(this);
